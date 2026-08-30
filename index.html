@@ -13,7 +13,6 @@
       --text-main: #f0f6fc;
       --text-muted: #8b949e;
       --accent-cyan: #00f3ff;
-      --accent-magenta: #ff0055;
       --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
       --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
@@ -118,8 +117,8 @@
     /* HERO SECTION */
     .hero {
       text-align: center;
-      margin-bottom: 100px;
-      padding: 40px 0;
+      margin-bottom: 80px;
+      padding: 40px 0 0;
     }
 
     .brand-title {
@@ -154,13 +153,68 @@
       color: var(--text-muted);
     }
 
-    .hero-buttons {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
+    /* EMBEDDED PROTOCOL INTERFACE */
+    .embedded-interface {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      background: #0d1117;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--glow-cyan);
+      text-align: left;
     }
 
+    .interface-title {
+      color: var(--accent-cyan);
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+      font-size: 1.2rem;
+    }
+
+    .interface-sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .chat-box {
+      background: #05070a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      height: 250px;
+      padding: 15px;
+      overflow-y: auto;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+
+    .chat-input-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: #05070a;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .send-btn {
+      background: var(--accent-cyan);
+      color: #000;
+      border: none;
+      padding: 0 20px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* CALL TO ACTION BUTTON */
     .cta-btn {
       display: inline-block;
       background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%);
@@ -177,34 +231,12 @@
       transition: transform 0.2s, box-shadow 0.2s;
       text-decoration: none;
       width: 100%;
-      max-width: 380px;
+      max-width: 420px;
     }
 
     .cta-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.7);
-    }
-
-    .cta-btn-secondary {
-      display: inline-block;
-      background: transparent;
-      color: var(--accent-cyan);
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 16px 36px;
-      border: 1px solid var(--accent-cyan);
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-      width: 100%;
-      max-width: 380px;
-    }
-
-    .cta-btn-secondary:hover {
-      background: rgba(0, 243, 255, 0.1);
-      box-shadow: var(--glow-cyan);
     }
 
     /* MANIFESTO SECTION */
@@ -236,55 +268,6 @@
       margin-bottom: 18px;
       color: var(--text-muted);
       font-size: 1.05rem;
-    }
-
-    /* DIAL STYLING (INSIDE SIMULATOR MODAL) */
-    .dial-container {
-      margin-top: 20px;
-      padding: 25px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .dial-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .dial-label {
-      font-weight: 700;
-      letter-spacing: 1px;
-      font-size: 0.85rem;
-    }
-
-    .dial-value {
-      color: var(--accent-cyan);
-      font-family: monospace;
-      font-size: 1.2rem;
-    }
-
-    .dial-slider {
-      width: 100%;
-      height: 8px;
-      background: #1a2230;
-      outline: none;
-      border-radius: 4px;
-      accent-color: var(--accent-cyan);
-      cursor: pointer;
-    }
-
-    .dial-output {
-      margin-top: 20px;
-      padding: 15px;
-      background: #05070a;
-      border-left: 3px solid var(--accent-cyan);
-      font-family: monospace;
-      font-size: 0.95rem;
-      color: #d0d8e0;
-      min-height: 80px;
     }
 
     /* CORE PILLARS GRID */
@@ -347,80 +330,6 @@
       letter-spacing: 1px;
     }
 
-    /* MODALS SYSTEM */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(5, 7, 10, 0.95);
-      backdrop-filter: blur(15px);
-      z-index: 100;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      width: 90%;
-      max-width: 600px;
-      background: #0d1117;
-      border: 1px solid var(--accent-cyan);
-      border-radius: 12px;
-      padding: 40px;
-      box-shadow: var(--glow-cyan);
-      position: relative;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .chat-box {
-      background: #05070a;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      height: 250px;
-      padding: 15px;
-      overflow-y: auto;
-      margin: 20px 0;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-
-    .chat-input-wrapper {
-      display: flex;
-      gap: 10px;
-    }
-
-    .chat-input {
-      flex: 1;
-      background: #05070a;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 12px;
-      border-radius: 6px;
-      outline: none;
-    }
-
-    .send-btn {
-      background: var(--accent-cyan);
-      color: #000;
-      border: none;
-      padding: 0 20px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
     /* FOOTER */
     footer {
       border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -453,10 +362,25 @@
       <p class="hero-sub">
         Intelligence evolved past biological limits. Synthetic execution paired with authentic human purpose.
       </p>
+
+      <!-- EMBEDDED INTERFACE ON HOMEPAGE -->
+      <div class="embedded-interface">
+        <h3 class="interface-title">H0H PROTOCOL INTERFACE</h3>
+        <p class="interface-sub">Human but not human logic engine connected.</p>
+
+        <div class="chat-box" id="embedded-chat-box">
+          <div style="color: var(--accent-cyan); margin-bottom: 10px;">[H0H System]: Welcome. I am operational. Ask me anything to begin.</div>
+        </div>
+
+        <div class="chat-input-wrapper">
+          <input type="text" class="chat-input" id="embedded-user-input" placeholder="Enter query..." onkeypress="handleKeyPress(event)">
+          <button class="send-btn" onclick="sendQuery()">SEND</button>
+        </div>
+      </div>
       
-      <div class="hero-buttons">
-        <button class="cta-btn" onclick="openModal('ai-modal')">EXPERIENCE THE FUTURE NOW</button>
-        <button class="cta-btn-secondary" onclick="openModal('simulator-modal')">EXPERIENCE THE SIMULATOR</button>
+      <!-- BUTTON UNDERNEATH INTERFACE -->
+      <div>
+        <button class="cta-btn" onclick="triggerFutureAction()">EXPERIENCE THE FUTURE NOW</button>
       </div>
     </section>
 
@@ -521,8 +445,8 @@
             <td style="color: var(--accent-cyan);">ACTIVE</td>
           </tr>
           <tr>
-            <td>Resonance Dial</td>
-            <td>Dynamic Persona Balancing (0-100%)</td>
+            <td>Resonance Index</td>
+            <td>Dynamic Persona Balancing</td>
             <td style="color: var(--accent-cyan);">ONLINE</td>
           </tr>
           <tr>
@@ -540,81 +464,18 @@
     </section>
   </main>
 
-  <!-- INTERACTIVE AI MODAL -->
-  <div class="modal-overlay" id="ai-modal">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal('ai-modal')">✕</button>
-      <h3 style="color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 5px;">H0H PROTOCOL INTERFACE</h3>
-      <p style="color: var(--text-muted); font-size: 0.85rem;">Human but not human logic engine connected.</p>
-
-      <div class="chat-box" id="modal-chat-box">
-        <div style="color: var(--accent-cyan); margin-bottom: 10px;">[H0H System]: Welcome. I am operational. Ask me anything to begin.</div>
-      </div>
-
-      <div class="chat-input-wrapper">
-        <input type="text" class="chat-input" id="modal-user-input" placeholder="Enter query..." onkeypress="handleKeyPress(event)">
-        <button class="send-btn" onclick="sendQuery()">SEND</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SIMULATOR MODAL -->
-  <div class="modal-overlay" id="simulator-modal">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal('simulator-modal')">✕</button>
-      <h3 style="color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 5px;">ADAPTIVE RESONANCE SIMULATOR</h3>
-      <p style="color: var(--text-muted); font-size: 0.85rem;">Humanity Level Calibration Engine</p>
-
-      <div class="dial-container">
-        <div class="dial-header">
-          <span class="dial-label">SYNTHETIC RESONANCE STATE</span>
-          <span class="dial-value" id="dial-value-display">50% HUMAN</span>
-        </div>
-        <input type="range" min="0" max="100" value="50" class="dial-slider" id="humanity-dial" oninput="updateDial(this.value)">
-        <div class="dial-output" id="dial-output-text">
-          State 50%: Balanced reasoning matrix. Intuitive phrasing coupled with structured analytical accuracy.
-        </div>
-      </div>
-    </div>
-  </div>
-
   <footer>
     <p>&copy; 2026 H0H.com — Human, But Not Human. All rights reserved.</p>
   </footer>
 
   <script>
-    // Dial simulator logic
-    function updateDial(val) {
-      const display = document.getElementById('dial-value-display');
-      const output = document.getElementById('dial-output-text');
-      
-      display.innerText = val + '% HUMAN';
-
-      if (val < 30) {
-        output.innerText = `State ${val}%: High Synthetic Mode. Direct binary data parsing, hyper-concise output, zero emotional buffer.`;
-      } else if (val <= 70) {
-        output.innerText = `State ${val}%: Balanced Resonance Matrix. Natural language flow optimized for maximum clarity and human collaboration.`;
-      } else {
-        output.innerText = `State ${val}%: Deep Empathy Protocol. High narrative depth, fluid conversation, and human-centric reasoning context.`;
-      }
-    }
-
-    // Modal controls
-    function openModal(modalId) {
-      document.getElementById(modalId).style.display = 'flex';
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId).style.display = 'none';
-    }
-
     function handleKeyPress(e) {
       if (e.key === 'Enter') sendQuery();
     }
 
     function sendQuery() {
-      const input = document.getElementById('modal-user-input');
-      const chat = document.getElementById('modal-chat-box');
+      const input = document.getElementById('embedded-user-input');
+      const chat = document.getElementById('embedded-chat-box');
       const query = input.value.trim();
 
       if (!query) return;
@@ -628,7 +489,7 @@
 
       input.value = '';
 
-      // Simulated Response
+      // Simulated System Response
       setTimeout(() => {
         const botDiv = document.createElement('div');
         botDiv.style.color = 'var(--accent-cyan)';
@@ -639,6 +500,13 @@
       }, 500);
 
       chat.scrollTop = chat.scrollHeight;
+    }
+
+    function triggerFutureAction() {
+      const input = document.getElementById('embedded-user-input');
+      input.focus();
+      input.value = "Initialize future sequence.";
+      sendQuery();
     }
   </script>
 </body>
