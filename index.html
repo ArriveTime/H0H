@@ -154,6 +154,13 @@
       color: var(--text-muted);
     }
 
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
     .cta-btn {
       display: inline-block;
       background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%);
@@ -169,11 +176,35 @@
       box-shadow: var(--glow-cyan);
       transition: transform 0.2s, box-shadow 0.2s;
       text-decoration: none;
+      width: 100%;
+      max-width: 380px;
     }
 
     .cta-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.7);
+    }
+
+    .cta-btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--accent-cyan);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 16px 36px;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .cta-btn-secondary:hover {
+      background: rgba(0, 243, 255, 0.1);
+      box-shadow: var(--glow-cyan);
     }
 
     /* MANIFESTO SECTION */
@@ -207,13 +238,13 @@
       font-size: 1.05rem;
     }
 
-    /* INTERACTIVE SIMULATOR (HUMANITY DIAL) */
+    /* DIAL STYLING (INSIDE SIMULATOR MODAL) */
     .dial-container {
-      margin-top: 30px;
-      padding: 30px;
-      background: rgba(0, 0, 0, 0.4);
+      margin-top: 20px;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.6);
       border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .dial-header {
@@ -226,6 +257,7 @@
     .dial-label {
       font-weight: 700;
       letter-spacing: 1px;
+      font-size: 0.85rem;
     }
 
     .dial-value {
@@ -247,12 +279,12 @@
     .dial-output {
       margin-top: 20px;
       padding: 15px;
-      background: #080c14;
+      background: #05070a;
       border-left: 3px solid var(--accent-cyan);
       font-family: monospace;
       font-size: 0.95rem;
       color: #d0d8e0;
-      min-height: 60px;
+      min-height: 80px;
     }
 
     /* CORE PILLARS GRID */
@@ -315,7 +347,7 @@
       letter-spacing: 1px;
     }
 
-    /* INTERACTIVE MODAL */
+    /* MODALS SYSTEM */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -408,7 +440,6 @@
     <div class="nav-logo">H<span>0</span>H</div>
     <ul class="nav-links">
       <li><a href="#manifesto">Manifesto</a></li>
-      <li><a href="#simulator">Simulator</a></li>
       <li><a href="#architecture">Architecture</a></li>
       <li><a href="#specs">Specifications</a></li>
     </ul>
@@ -422,7 +453,11 @@
       <p class="hero-sub">
         Intelligence evolved past biological limits. Synthetic execution paired with authentic human purpose.
       </p>
-      <button class="cta-btn" onclick="openModal()">EXPERIENCE THE FUTURE NOW</button>
+      
+      <div class="hero-buttons">
+        <button class="cta-btn" onclick="openModal('ai-modal')">EXPERIENCE THE FUTURE NOW</button>
+        <button class="cta-btn-secondary" onclick="openModal('simulator-modal')">EXPERIENCE THE SIMULATOR</button>
+      </div>
     </section>
 
     <!-- MANIFESTO -->
@@ -439,26 +474,6 @@
         <p>
           We do not seek to replace the human experience. We amplify it beyond physical limits.
         </p>
-      </div>
-    </section>
-
-    <!-- INTERACTIVE HUMANITY DIAL SIMULATOR -->
-    <section class="section-card" id="simulator">
-      <div class="section-title">02 // Adaptive Resonance</div>
-      <h2 class="manifesto-heading">Humanity Level Calibration</h2>
-      <p style="color: var(--text-muted); margin-bottom: 20px;">
-        Adjust the synthetic-to-human resonance ratio below to observe real-time output behavior.
-      </p>
-
-      <div class="dial-container">
-        <div class="dial-header">
-          <span class="dial-label">SYNTHETIC RESONANCE STATE</span>
-          <span class="dial-value" id="dial-value-display">50% HUMAN</span>
-        </div>
-        <input type="range" min="0" max="100" value="50" class="dial-slider" id="humanity-dial" oninput="updateDial(this.value)">
-        <div class="dial-output" id="dial-output-text">
-          State 50%: Balanced reasoning matrix. Intuitive phrasing coupled with structured analytical accuracy.
-        </div>
       </div>
     </section>
 
@@ -489,7 +504,7 @@
 
     <!-- TECHNICAL SPECIFICATIONS MATRIX -->
     <section class="section-card" id="specs">
-      <div class="section-title">03 // Core Architecture</div>
+      <div class="section-title">02 // Core Architecture</div>
       <h2 class="manifesto-heading">System Specifications</h2>
       <table class="specs-table">
         <thead>
@@ -528,7 +543,7 @@
   <!-- INTERACTIVE AI MODAL -->
   <div class="modal-overlay" id="ai-modal">
     <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">✕</button>
+      <button class="close-modal" onclick="closeModal('ai-modal')">✕</button>
       <h3 style="color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 5px;">H0H PROTOCOL INTERFACE</h3>
       <p style="color: var(--text-muted); font-size: 0.85rem;">Human but not human logic engine connected.</p>
 
@@ -539,6 +554,26 @@
       <div class="chat-input-wrapper">
         <input type="text" class="chat-input" id="modal-user-input" placeholder="Enter query..." onkeypress="handleKeyPress(event)">
         <button class="send-btn" onclick="sendQuery()">SEND</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATOR MODAL -->
+  <div class="modal-overlay" id="simulator-modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal('simulator-modal')">✕</button>
+      <h3 style="color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 5px;">ADAPTIVE RESONANCE SIMULATOR</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Humanity Level Calibration Engine</p>
+
+      <div class="dial-container">
+        <div class="dial-header">
+          <span class="dial-label">SYNTHETIC RESONANCE STATE</span>
+          <span class="dial-value" id="dial-value-display">50% HUMAN</span>
+        </div>
+        <input type="range" min="0" max="100" value="50" class="dial-slider" id="humanity-dial" oninput="updateDial(this.value)">
+        <div class="dial-output" id="dial-output-text">
+          State 50%: Balanced reasoning matrix. Intuitive phrasing coupled with structured analytical accuracy.
+        </div>
       </div>
     </div>
   </div>
@@ -565,12 +600,12 @@
     }
 
     // Modal controls
-    function openModal() {
-      document.getElementById('ai-modal').style.display = 'flex';
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
     }
 
-    function closeModal() {
-      document.getElementById('ai-modal').style.display = 'none';
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
     }
 
     function handleKeyPress(e) {
@@ -584,7 +619,7 @@
 
       if (!query) return;
 
-      // Append user msg
+      // Append user message
       const userDiv = document.createElement('div');
       userDiv.style.color = '#fff';
       userDiv.style.marginBottom = '10px';
