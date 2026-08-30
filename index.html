@@ -7,13 +7,16 @@
   <style>
     /* CSS RESETS & THEME VARS */
     :root {
-      --bg-color: #05070a;
-      --card-bg: rgba(13, 17, 23, 0.75);
-      --border-color: rgba(0, 243, 255, 0.2);
+      --bg-color: #030508;
+      --card-bg: rgba(10, 15, 26, 0.75);
+      --border-color: rgba(0, 243, 255, 0.25);
+      --border-glow: rgba(0, 243, 255, 0.5);
       --text-main: #f0f6fc;
       --text-muted: #8b949e;
       --accent-cyan: #00f3ff;
-      --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
+      --accent-magenta: #ff0055;
+      --glow-cyan: 0 0 25px rgba(0, 243, 255, 0.5);
+      --glow-magenta: 0 0 25px rgba(ff, 0, 85, 0.5);
       --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
@@ -30,6 +33,19 @@
       line-height: 1.6;
       overflow-x: hidden;
       min-height: 100vh;
+      position: relative;
+    }
+
+    /* FUTURISTIC SCANLINE OVERLAY */
+    body::before {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      z-index: 20;
+      background-size: 100% 4px, 6px 100%;
+      pointer-events: none;
     }
 
     /* BACKGROUND GRID & GLOW EFFECT */
@@ -40,21 +56,32 @@
       width: 100vw;
       height: 100vh;
       background-image: 
-        linear-gradient(to right, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
       z-index: 0;
     }
 
-    .bg-glow {
+    .bg-glow-top {
       position: fixed;
-      top: -10%;
+      top: -15%;
       left: 50%;
       transform: translateX(-50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(0,243,255,0.12) 0%, rgba(5,7,10,0) 70%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0,243,255,0.15) 0%, rgba(3,5,8,0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-bottom {
+      position: fixed;
+      bottom: -15%;
+      right: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,0,85,0.1) 0%, rgba(3,5,8,0) 70%);
       pointer-events: none;
       z-index: 0;
     }
@@ -68,16 +95,17 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px 40px;
-      backdrop-filter: blur(12px);
-      background: rgba(5, 7, 10, 0.8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(3, 5, 8, 0.85);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 4px 30px rgba(0, 243, 255, 0.05);
+      z-index: 30;
     }
 
     .nav-logo {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 900;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       color: var(--text-main);
     }
 
@@ -95,20 +123,21 @@
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: color 0.3s;
+      letter-spacing: 2px;
+      transition: all 0.3s;
     }
 
     .nav-links a:hover {
       color: var(--accent-cyan);
+      text-shadow: var(--glow-cyan);
     }
 
     /* MAIN CONTAINER */
     main {
       position: relative;
-      z-index: 1;
+      z-index: 10;
       max-width: 1100px;
       margin: 0 auto;
       padding: 60px 20px 100px;
@@ -118,17 +147,18 @@
     .hero {
       text-align: center;
       margin-bottom: 80px;
-      padding: 40px 0 0;
+      padding: 20px 0 0;
     }
 
     .brand-title {
-      font-size: clamp(4rem, 12vw, 8rem);
+      font-size: clamp(4rem, 12vw, 8.5rem);
       font-weight: 900;
-      letter-spacing: 6px;
+      letter-spacing: 8px;
       line-height: 1;
       margin-bottom: 15px;
       color: var(--text-main);
       text-transform: uppercase;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
     }
 
     .brand-title .zero {
@@ -138,11 +168,11 @@
 
     .tagline {
       font-size: clamp(1.2rem, 3vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: 8px;
+      font-weight: 800;
+      letter-spacing: 10px;
       color: var(--accent-cyan);
       text-transform: uppercase;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       text-shadow: var(--glow-cyan);
     }
 
@@ -153,90 +183,169 @@
       color: var(--text-muted);
     }
 
-    /* EMBEDDED PROTOCOL INTERFACE */
+    /* EMBEDDED PROTOCOL INTERFACE CARD */
     .embedded-interface {
-      max-width: 700px;
-      margin: 0 auto 30px;
-      background: #0d1117;
+      max-width: 750px;
+      margin: 0 auto 35px;
+      background: var(--card-bg);
       border: 1px solid var(--accent-cyan);
       border-radius: 12px;
-      padding: 30px;
-      box-shadow: var(--glow-cyan);
+      padding: 35px;
+      box-shadow: var(--glow-cyan), inset 0 0 15px rgba(0, 243, 255, 0.05);
       text-align: left;
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+
+    .interface-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+      padding-bottom: 15px;
     }
 
     .interface-title {
       color: var(--accent-cyan);
       letter-spacing: 2px;
-      margin-bottom: 5px;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-shadow: var(--glow-cyan);
     }
 
     .interface-sub {
       color: var(--text-muted);
       font-size: 0.85rem;
+      margin-top: 3px;
     }
 
-    .chat-box {
-      background: #05070a;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    /* AI INVOLVEMENT SLIDER */
+    .slider-box {
+      background: rgba(3, 5, 8, 0.8);
+      border: 1px solid rgba(0, 243, 255, 0.2);
       border-radius: 8px;
-      height: 250px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .slider-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .slider-value {
+      color: var(--accent-cyan);
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-shadow: var(--glow-cyan);
+    }
+
+    .ai-slider {
+      width: 100%;
+      height: 8px;
+      background: #0d1624;
+      outline: none;
+      border-radius: 4px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    .slider-status {
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* CHAT DISPLAY BOX */
+    .chat-box {
+      background: #020407;
+      border: 1px solid rgba(0, 243, 255, 0.15);
+      border-radius: 8px;
+      height: 240px;
       padding: 15px;
       overflow-y: auto;
-      margin: 20px 0;
+      margin-bottom: 20px;
       font-family: monospace;
       font-size: 0.9rem;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
     }
 
     .chat-input-wrapper {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
     .chat-input {
       flex: 1;
-      background: #05070a;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: #020407;
+      border: 1px solid rgba(0, 243, 255, 0.3);
       color: #fff;
-      padding: 12px;
+      padding: 14px 18px;
       border-radius: 6px;
       outline: none;
+      font-family: var(--font-stack);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: var(--glow-cyan);
     }
 
     .send-btn {
       background: var(--accent-cyan);
       color: #000;
       border: none;
-      padding: 0 20px;
-      font-weight: 700;
+      padding: 0 28px;
+      font-weight: 800;
+      letter-spacing: 1px;
       border-radius: 6px;
       cursor: pointer;
+      box-shadow: var(--glow-cyan);
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .send-btn:hover {
+      transform: scale(1.02);
+      background: #33f6ff;
     }
 
     /* CALL TO ACTION BUTTON */
     .cta-btn {
       display: inline-block;
-      background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%);
+      background: linear-gradient(135deg, #00f3ff 0%, #0077ff 100%);
       color: #000;
       font-size: 1.1rem;
-      font-weight: 800;
-      padding: 18px 42px;
+      font-weight: 900;
+      padding: 20px 48px;
       border: none;
       border-radius: 4px;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       cursor: pointer;
       box-shadow: var(--glow-cyan);
       transition: transform 0.2s, box-shadow 0.2s;
       text-decoration: none;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
     }
 
     .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 35px rgba(0, 243, 255, 0.7);
+      transform: translateY(-3px);
+      box-shadow: 0 0 40px rgba(0, 243, 255, 0.8);
     }
 
     /* MANIFESTO SECTION */
@@ -246,7 +355,8 @@
       border-radius: 12px;
       padding: 50px 40px;
       margin-bottom: 80px;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .section-title {
@@ -255,6 +365,7 @@
       letter-spacing: 4px;
       color: var(--accent-cyan);
       margin-bottom: 15px;
+      text-shadow: var(--glow-cyan);
     }
 
     .manifesto-heading {
@@ -262,6 +373,7 @@
       font-weight: 800;
       margin-bottom: 25px;
       line-height: 1.3;
+      letter-spacing: 1px;
     }
 
     .manifesto-body p {
@@ -280,27 +392,31 @@
 
     .pillar-card {
       background: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 243, 255, 0.15);
       padding: 35px;
       border-radius: 12px;
-      transition: border-color 0.3s;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s;
     }
 
     .pillar-card:hover {
       border-color: var(--accent-cyan);
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-4px);
     }
 
     .pillar-num {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      color: rgba(255, 255, 255, 0.15);
+      color: rgba(0, 243, 255, 0.2);
       margin-bottom: 15px;
     }
 
     .pillar-title {
       font-size: 1.3rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 12px;
+      letter-spacing: 1px;
     }
 
     .pillar-desc {
@@ -316,34 +432,38 @@
     }
 
     .specs-table th, .specs-table td {
-      padding: 14px 20px;
+      padding: 16px 20px;
       text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(0, 243, 255, 0.1);
       font-size: 0.95rem;
     }
 
     .specs-table th {
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       font-size: 0.8rem;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
 
     /* FOOTER */
     footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid var(--border-color);
       text-align: center;
       padding: 40px 20px;
       color: var(--text-muted);
       font-size: 0.85rem;
+      background: rgba(3, 5, 8, 0.9);
+      position: relative;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
 
   <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
+  <div class="bg-glow-top"></div>
+  <div class="bg-glow-bottom"></div>
 
   <nav>
     <div class="nav-logo">H<span>0</span>H</div>
@@ -355,7 +475,7 @@
   </nav>
 
   <main>
-    <!-- HERO -->
+    <!-- HERO SECTION -->
     <section class="hero">
       <h1 class="brand-title">H<span class="zero">0</span>H.com</h1>
       <div class="tagline">HUMAN, BUT NOT HUMAN.</div>
@@ -363,13 +483,29 @@
         Intelligence evolved past biological limits. Synthetic execution paired with authentic human purpose.
       </p>
 
-      <!-- EMBEDDED INTERFACE ON HOMEPAGE -->
+      <!-- EMBEDDED INTERFACE WITH AI CONTROL SLIDER -->
       <div class="embedded-interface">
-        <h3 class="interface-title">H0H PROTOCOL INTERFACE</h3>
-        <p class="interface-sub">Human but not human logic engine connected.</p>
+        <div class="interface-header">
+          <div>
+            <h3 class="interface-title">H0H PROTOCOL INTERFACE</h3>
+            <p class="interface-sub">Human but not human logic engine connected.</p>
+          </div>
+        </div>
+
+        <!-- AI INVOLVEMENT ADJUSTMENT CONTROL -->
+        <div class="slider-box">
+          <div class="slider-header">
+            <span class="slider-label">AI Involvement Level</span>
+            <span class="slider-value" id="ai-value-display">50% SYNTHETIC</span>
+          </div>
+          <input type="range" min="0" max="100" value="50" class="ai-slider" id="ai-slider" oninput="updateAiLevel(this.value)">
+          <div class="slider-status" id="slider-status-text">
+            Mode 50%: Balanced resonance. Intuitive phrasing with structured algorithmic precision.
+          </div>
+        </div>
 
         <div class="chat-box" id="embedded-chat-box">
-          <div style="color: var(--accent-cyan); margin-bottom: 10px;">[H0H System]: Welcome. I am operational. Ask me anything to begin.</div>
+          <div style="color: var(--accent-cyan); margin-bottom: 10px;">[H0H System]: Welcome. Logic engine initialized at 50% AI involvement. Submit a query to test execution.</div>
         </div>
 
         <div class="chat-input-wrapper">
@@ -378,7 +514,7 @@
         </div>
       </div>
       
-      <!-- BUTTON UNDERNEATH INTERFACE -->
+      <!-- MAIN ACTION BUTTON BELOW INTERFACE -->
       <div>
         <button class="cta-btn" onclick="triggerFutureAction()">EXPERIENCE THE FUTURE NOW</button>
       </div>
@@ -442,22 +578,22 @@
           <tr>
             <td>Neural Core</td>
             <td>Transformer Self-Attention Matrix</td>
-            <td style="color: var(--accent-cyan);">ACTIVE</td>
+            <td style="color: var(--accent-cyan); text-shadow: var(--glow-cyan);">ACTIVE</td>
           </tr>
           <tr>
-            <td>Resonance Index</td>
-            <td>Dynamic Persona Balancing</td>
-            <td style="color: var(--accent-cyan);">ONLINE</td>
+            <td>Resonance Control</td>
+            <td>User-Calibrated AI Involvement (0-100%)</td>
+            <td style="color: var(--accent-cyan); text-shadow: var(--glow-cyan);">ONLINE</td>
           </tr>
           <tr>
             <td>Latency Index</td>
             <td>Sub-10ms Inference Loop</td>
-            <td style="color: var(--accent-cyan);">OPTIMAL</td>
+            <td style="color: var(--accent-cyan); text-shadow: var(--glow-cyan);">OPTIMAL</td>
           </tr>
           <tr>
             <td>Security Envelope</td>
             <td>Zero-Knowledge Encryption Layer</td>
-            <td style="color: var(--accent-cyan);">ENFORCED</td>
+            <td style="color: var(--accent-cyan); text-shadow: var(--glow-cyan);">ENFORCED</td>
           </tr>
         </tbody>
       </table>
@@ -469,6 +605,24 @@
   </footer>
 
   <script>
+    let currentAiLevel = 50;
+
+    function updateAiLevel(val) {
+      currentAiLevel = val;
+      const display = document.getElementById('ai-value-display');
+      const status = document.getElementById('slider-status-text');
+      
+      display.innerText = val + '% SYNTHETIC';
+
+      if (val < 30) {
+        status.innerText = `Mode ${val}%: High Human Focus. Subtle analytical assistance, high narrative depth, organic tone.`;
+      } else if (val <= 70) {
+        status.innerText = `Mode ${val}%: Balanced Resonance. Intuitive phrasing with structured algorithmic precision.`;
+      } else {
+        status.innerText = `Mode ${val}%: Max Synthetic Engine. Hyper-concise data synthesis, instant structural execution.`;
+      }
+    }
+
     function handleKeyPress(e) {
       if (e.key === 'Enter') sendQuery();
     }
@@ -480,7 +634,7 @@
 
       if (!query) return;
 
-      // Append user message
+      // Append user query
       const userDiv = document.createElement('div');
       userDiv.style.color = '#fff';
       userDiv.style.marginBottom = '10px';
@@ -489,15 +643,25 @@
 
       input.value = '';
 
-      // Simulated System Response
+      // Simulated System Response dependent on AI Involvement level
       setTimeout(() => {
         const botDiv = document.createElement('div');
         botDiv.style.color = 'var(--accent-cyan)';
         botDiv.style.marginBottom = '10px';
-        botDiv.innerText = `[H0H Engine]: Processing at sub-10ms logic state... Intent recognized: "${query}". Operating under "Human, but not human" parameters.`;
+
+        let responseText = '';
+        if (currentAiLevel < 30) {
+          responseText = `[H0H Engine - ${currentAiLevel}% AI]: Processing query with organic context... Intent recognized: "${query}". Responding with high empathetic focus.`;
+        } else if (currentAiLevel <= 70) {
+          responseText = `[H0H Engine - ${currentAiLevel}% AI]: Sub-10ms balanced logic loop executed. Intent: "${query}". Operating under optimized hybrid parameter set.`;
+        } else {
+          responseText = `[H0H Engine - ${currentAiLevel}% AI]: MAX SYNTHETIC RUNTIME. Query processed: "${query}". Execution pure, concise, binary-aligned.`;
+        }
+
+        botDiv.innerText = responseText;
         chat.appendChild(botDiv);
         chat.scrollTop = chat.scrollHeight;
-      }, 500);
+      }, 400);
 
       chat.scrollTop = chat.scrollHeight;
     }
@@ -505,7 +669,7 @@
     function triggerFutureAction() {
       const input = document.getElementById('embedded-user-input');
       input.focus();
-      input.value = "Initialize future sequence.";
+      input.value = "Initialize full synthetic future sequence.";
       sendQuery();
     }
   </script>
