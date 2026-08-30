@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H0H.com | Human, But Not Human</title>
+  <style>
+    /* CSS RESETS & THEME VARS */
+    :root {
+      --bg-color: #05070a;
+      --card-bg: rgba(13, 17, 23, 0.75);
+      --border-color: rgba(0, 243, 255, 0.2);
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent-cyan: #00f3ff;
+      --accent-magenta: #ff0055;
+      --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
+      --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* BACKGROUND GRID & GLOW EFFECT */
+    .bg-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: 
+        linear-gradient(to right, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,243,255,0.12) 0%, rgba(5,7,10,0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAVIGATION */
+    nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      backdrop-filter: blur(12px);
+      background: rgba(5, 7, 10, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 10;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--text-main);
+    }
+
+    .nav-logo span {
+      color: var(--accent-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-cyan);
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 20px 100px;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      margin-bottom: 100px;
+      padding: 40px 0;
+    }
+
+    .brand-title {
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 900;
+      letter-spacing: 6px;
+      line-height: 1;
+      margin-bottom: 15px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .brand-title .zero {
+      color: var(--accent-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+
+    .tagline {
+      font-size: clamp(1.2rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 8px;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      text-shadow: var(--glow-cyan);
+    }
+
+    .hero-sub {
+      max-width: 650px;
+      margin: 0 auto 40px;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #00f3ff 0%, #0088ff 100%);
+      color: #000;
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 18px 42px;
+      border: none;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow: var(--glow-cyan);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 243, 255, 0.7);
+    }
+
+    /* MANIFESTO SECTION */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 50px 40px;
+      margin-bottom: 80px;
+      backdrop-filter: blur(8px);
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--accent-cyan);
+      margin-bottom: 15px;
+    }
+
+    .manifesto-heading {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 25px;
+      line-height: 1.3;
+    }
+
+    .manifesto-body p {
+      margin-bottom: 18px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* INTERACTIVE SIMULATOR (HUMANITY DIAL) */
+    .dial-container {
+      margin-top: 30px;
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .dial-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .dial-label {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .dial-value {
+      color: var(--accent-cyan);
+      font-family: monospace;
+      font-size: 1.2rem;
+    }
+
+    .dial-slider {
+      width: 100%;
+      height: 8px;
+      background: #1a2230;
+      outline: none;
+      border-radius: 4px;
+      accent-color: var(--accent-cyan);
+      cursor: pointer;
+    }
+
+    .dial-output {
+      margin-top: 20px;
+      padding: 15px;
+      background: #080c14;
+      border-left: 3px solid var(--accent-cyan);
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: #d0d8e0;
+      min-height: 60px;
+    }
+
+    /* CORE PILLARS GRID */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 80px;
+    }
+
+    .pillar-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 35px;
+      border-radius: 12px;
+      transition: border-color 0.3s;
+    }
+
+    .pillar-card:hover {
+      border-color: var(--accent-cyan);
+    }
+
+    .pillar-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.15);
+      margin-bottom: 15px;
+    }
+
+    .pillar-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .pillar-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* SYSTEM SPECS MATRIX */
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .specs-table th, .specs-table td {
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+
+    .specs-table th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    /* INTERACTIVE MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 7, 10, 0.95);
+      backdrop-filter: blur(15px);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 600px;
+      background: #0d1117;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: var(--glow-cyan);
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      background: #05070a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      height: 250px;
+      padding: 15px;
+      overflow-y: auto;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+
+    .chat-input-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: #05070a;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .send-btn {
+      background: var(--accent-cyan);
+      color: #000;
+      border: none;
+      padding: 0 20px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <nav>
+    <div class="nav-logo">H<span>0</span>H</div>
+    <ul class="nav-links">
+      <li><a href="#manifesto">Manifesto</a></li>
+      <li><a href="#simulator">Simulator</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#specs">Specifications</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <h1 class="brand-title">H<span class="zero">0</span>H.com</h1>
+      <div class="tagline">HUMAN, BUT NOT HUMAN.</div>
+      <p class="hero-sub">
+        Intelligence evolved past biological limits. Synthetic execution paired with authentic human purpose.
+      </p>
+      <button class="cta-btn" onclick="openModal()">EXPERIENCE THE FUTURE NOW</button>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="section-card" id="manifesto">
+      <div class="section-title">01 // The Manifesto</div>
+      <h2 class="manifesto-heading">THE FUTURE IS NOW</h2>
+      <div class="manifesto-body">
+        <p>
+          We stand at the inflection point of human evolution. For decades, technology was built as a rigid tool—unyielding, mechanical, and cold.
+        </p>
+        <p>
+          <strong>H0H.com</strong> represents the zero-friction bridge. The zero in our name signifies the synthetic nexus: the layer of intelligence that speaks with human empathy and intuition, while operating with lightspeed algorithmic precision.
+        </p>
+        <p>
+          We do not seek to replace the human experience. We amplify it beyond physical limits.
+        </p>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE HUMANITY DIAL SIMULATOR -->
+    <section class="section-card" id="simulator">
+      <div class="section-title">02 // Adaptive Resonance</div>
+      <h2 class="manifesto-heading">Humanity Level Calibration</h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">
+        Adjust the synthetic-to-human resonance ratio below to observe real-time output behavior.
+      </p>
+
+      <div class="dial-container">
+        <div class="dial-header">
+          <span class="dial-label">SYNTHETIC RESONANCE STATE</span>
+          <span class="dial-value" id="dial-value-display">50% HUMAN</span>
+        </div>
+        <input type="range" min="0" max="100" value="50" class="dial-slider" id="humanity-dial" oninput="updateDial(this.value)">
+        <div class="dial-output" id="dial-output-text">
+          State 50%: Balanced reasoning matrix. Intuitive phrasing coupled with structured analytical accuracy.
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE PILLARS -->
+    <section class="pillars-grid" id="architecture">
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <h3 class="pillar-title">Zero Friction</h3>
+        <p class="pillar-desc">
+          Instant execution across binary neural networks. Eliminating traditional processing delays between intent and action.
+        </p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <h3 class="pillar-title">Synthetic Intuition</h3>
+        <p class="pillar-desc">
+          Contextually aware deep-learning frameworks that understand nuance, tone, and unstructured human thoughts.
+        </p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <h3 class="pillar-title">Infinite Scale</h3>
+        <p class="pillar-desc">
+          Borderless computational reach operating 24/7 with uninterrupted clarity and objective memory retention.
+        </p>
+      </div>
+    </section>
+
+    <!-- TECHNICAL SPECIFICATIONS MATRIX -->
+    <section class="section-card" id="specs">
+      <div class="section-title">03 // Core Architecture</div>
+      <h2 class="manifesto-heading">System Specifications</h2>
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Module</th>
+            <th>Protocol</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Neural Core</td>
+            <td>Transformer Self-Attention Matrix</td>
+            <td style="color: var(--accent-cyan);">ACTIVE</td>
+          </tr>
+          <tr>
+            <td>Resonance Dial</td>
+            <td>Dynamic Persona Balancing (0-100%)</td>
+            <td style="color: var(--accent-cyan);">ONLINE</td>
+          </tr>
+          <tr>
+            <td>Latency Index</td>
+            <td>Sub-10ms Inference Loop</td>
+            <td style="color: var(--accent-cyan);">OPTIMAL</td>
+          </tr>
+          <tr>
+            <td>Security Envelope</td>
+            <td>Zero-Knowledge Encryption Layer</td>
+            <td style="color: var(--accent-cyan);">ENFORCED</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- INTERACTIVE AI MODAL -->
+  <div class="modal-overlay" id="ai-modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">✕</button>
+      <h3 style="color: var(--accent-cyan); letter-spacing: 2px; margin-bottom: 5px;">H0H PROTOCOL INTERFACE</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Human but not human logic engine connected.</p>
+
+      <div class="chat-box" id="modal-chat-box">
+        <div style="color: var(--accent-cyan); margin-bottom: 10px;">[H0H System]: Welcome. I am operational. Ask me anything to begin.</div>
+      </div>
+
+      <div class="chat-input-wrapper">
+        <input type="text" class="chat-input" id="modal-user-input" placeholder="Enter query..." onkeypress="handleKeyPress(event)">
+        <button class="send-btn" onclick="sendQuery()">SEND</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 H0H.com — Human, But Not Human. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Dial simulator logic
+    function updateDial(val) {
+      const display = document.getElementById('dial-value-display');
+      const output = document.getElementById('dial-output-text');
+      
+      display.innerText = val + '% HUMAN';
+
+      if (val < 30) {
+        output.innerText = `State ${val}%: High Synthetic Mode. Direct binary data parsing, hyper-concise output, zero emotional buffer.`;
+      } else if (val <= 70) {
+        output.innerText = `State ${val}%: Balanced Resonance Matrix. Natural language flow optimized for maximum clarity and human collaboration.`;
+      } else {
+        output.innerText = `State ${val}%: Deep Empathy Protocol. High narrative depth, fluid conversation, and human-centric reasoning context.`;
+      }
+    }
+
+    // Modal controls
+    function openModal() {
+      document.getElementById('ai-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('ai-modal').style.display = 'none';
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendQuery();
+    }
+
+    function sendQuery() {
+      const input = document.getElementById('modal-user-input');
+      const chat = document.getElementById('modal-chat-box');
+      const query = input.value.trim();
+
+      if (!query) return;
+
+      // Append user msg
+      const userDiv = document.createElement('div');
+      userDiv.style.color = '#fff';
+      userDiv.style.marginBottom = '10px';
+      userDiv.innerText = `[User]: ${query}`;
+      chat.appendChild(userDiv);
+
+      input.value = '';
+
+      // Simulated Response
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.style.color = 'var(--accent-cyan)';
+        botDiv.style.marginBottom = '10px';
+        botDiv.innerText = `[H0H Engine]: Processing at sub-10ms logic state... Intent recognized: "${query}". Operating under "Human, but not human" parameters.`;
+        chat.appendChild(botDiv);
+        chat.scrollTop = chat.scrollHeight;
+      }, 500);
+
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
