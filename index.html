@@ -91,14 +91,39 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(212, 175, 55, 0.05);
     }
 
-    /* Door / Keycard Hover Effects */
-    .door-choice {
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Hotel Door Styling */
+    .hotel-door-btn {
+      background: linear-gradient(145deg, #1f110b 0%, #0d0604 100%);
+      border: 2px solid #5c3a21;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.8), inset 0 0 12px rgba(212, 175, 55, 0.1);
+      position: relative;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
-    .door-choice:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-color: rgba(212, 175, 55, 0.8);
-      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25), 0 0 15px rgba(128, 0, 32, 0.5);
+
+    .hotel-door-btn:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: var(--gold);
+      box-shadow: 0 15px 35px rgba(212, 175, 55, 0.25), 0 0 20px rgba(128, 0, 32, 0.6);
+    }
+
+    .hotel-door-btn::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      pointer-events: none;
+    }
+
+    .door-plate {
+      background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7);
+      color: #111;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
     }
   </style>
 </head>
@@ -146,7 +171,7 @@
       <!-- Live Narrator Display Box -->
       <div class="my-6 p-4 rounded bg-black/60 border border-amber-900/40 text-left min-h-[100px] flex items-center justify-center">
         <p id="checkInNarrative" class="text-lg leading-relaxed font-serif text-amber-100/90 text-center">
-          Welcome to the Horoscope Hotel, please enter your first name and date of birth to check in...
+          Welcome to the Horoscope Hotel, please enter your first name and date of birth to check in, but be aware that many check in but don't check out, as this journey reveals your future...
         </p>
       </div>
 
@@ -219,18 +244,43 @@
 
         <!-- Door Choices Section -->
         <div class="mt-6">
-          <label class="block text-xs font-mono-custom text-amber-400/70 uppercase tracking-widest mb-3">
-            SELECT A DOOR TO CONTINUE DOWN THE CORRIDOR:
+          <label class="block text-xs font-mono-custom text-amber-400/70 uppercase tracking-widest mb-4 text-center">
+            CHOOSE YOUR DESTINY DOORWAY TO ADVANCE:
           </label>
-          <div id="doorOptionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Dynamic Door Buttons Inserted Here -->
+          <div id="doorOptionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Dynamic Hotel Door Buttons Inserted Here -->
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- ================= 3. FINAL HOROSCOPE ORACLE REVELATION ================= -->
+    <!-- ================= 3. CONFIRMATION MODAL ================= -->
+    <div id="doorConfirmModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+      <div class="hotel-card max-w-lg w-full p-6 sm:p-8 rounded-lg text-center border-2 border-amber-500/80 shadow-2xl">
+        <div class="text-amber-400 text-3xl mb-2">🚪</div>
+        <h3 class="text-2xl font-cinzel text-amber-300 font-bold tracking-wider mb-2">DOOR SELECTION</h3>
+        
+        <div class="my-4 p-4 rounded bg-black/80 border border-amber-900/50">
+          <p id="confirmNarrative" class="text-base font-serif text-amber-100 leading-relaxed">
+            <!-- Dynamic Confirmation Speech -->
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+          <button onclick="cancelDoorSelection()" type="button" 
+            class="px-5 py-2.5 rounded bg-zinc-900 hover:bg-zinc-800 text-gray-300 font-mono-custom text-xs border border-zinc-700 transition">
+            STEP BACK
+          </button>
+          <button onclick="confirmDoorSelection()" type="button" 
+            class="px-6 py-2.5 rounded bg-gradient-to-r from-amber-800 via-amber-600 to-amber-800 hover:from-amber-700 hover:to-amber-700 text-amber-100 font-cinzel font-bold text-xs tracking-widest border border-amber-400 shadow-lg transition transform hover:scale-105">
+            PROCEED THROUGH DOOR
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 4. FINAL HOROSCOPE ORACLE REVELATION ================= -->
     <div id="finalRevelationScreen" class="w-full hidden flex-col items-center">
       <div class="w-full hotel-card p-8 rounded-lg text-center relative border-2 border-amber-500/60 shadow-2xl">
         
@@ -257,8 +307,8 @@
             <span id="finalRuler" class="text-amber-300 font-bold text-sm">---</span>
           </div>
           <div class="p-2 border border-amber-900/30 rounded">
-            <span class="block text-gray-500">PATH ID</span>
-            <span id="finalPath" class="text-amber-300 font-bold text-sm">#H0H-99</span>
+            <span class="block text-gray-500">CHOICES</span>
+            <span id="finalPath" class="text-amber-300 font-bold text-sm">10 DOORS</span>
           </div>
         </div>
 
@@ -279,11 +329,11 @@
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onclick="restartJourney()" 
+          <button onclick="restartJourney()" type="button"
             class="px-6 py-3 rounded bg-amber-900/50 hover:bg-amber-800 text-amber-200 font-cinzel text-sm border border-amber-600/50 transition">
             RE-ENTER HOROSCOPE HOTEL
           </button>
-          <button onclick="shareDestiny()" 
+          <button onclick="shareDestiny()" type="button"
             class="px-6 py-3 rounded bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-600 hover:to-amber-800 text-amber-100 font-cinzel text-sm border border-amber-400/50 transition">
             SEAL YOUR DESTINY
           </button>
@@ -310,7 +360,9 @@
       zodiacSign: '',
       element: '',
       rulingPlanet: '',
+      zodiacTrait: '',
       currentChamberIndex: 0,
+      pendingSelection: null,
       choicesMade: [],
       audioMuted: false,
       speechSynth: window.speechSynthesis,
@@ -354,7 +406,7 @@
     }
 
     /* =========================================================================
-       3. 10 HOTEL CHAMBERS (ROOMS, DESCRIPTIONS & CHOICES)
+       3. 10 HOTEL CHAMBERS (ROOMS, DESCRIPTIONS & REAL HOTEL DOORS)
        ========================================================================= */
     const hotelChambers = [
       {
@@ -364,8 +416,8 @@
         narrative: "You stand alone beneath a brass chandelier that hums with static. Dust motes float frozen in the dim golden light. The heavy oak entrance doors click shut behind you, locking firmly.",
         clue: "Your presence destabilizes the shadows. The air smells faintly of ozone and old parchment.",
         doors: [
-          { label: "Door 102 - Velvet Corridor", leadText: "Proceed down the heavy carpeted hallway..." },
-          { label: "Door 105 - The Abandoned Key Room", leadText: "Step into a dusty desk alcove..." }
+          { number: "102", name: "Velvet Corridor", leadText: "Proceed down the heavy carpeted hallway..." },
+          { number: "105", name: "Key Alcove", leadText: "Step into a dusty desk alcove..." }
         ]
       },
       {
@@ -375,8 +427,8 @@
         narrative: "Long red drapes line this windowless hall. Wall sconces flicker as if breathing in sync with your pulse. A distant grandfather clock ticks out of tempo.",
         clue: "As an element sign of {ELEMENT}, you feel the temperature in this hallway shifting to match your temperament.",
         doors: [
-          { label: "Door 201 - The Deserted Lounge", leadText: "Enter through a frosted glass door..." },
-          { label: "Door 204 - The Quiet Library", leadText: "Push open a heavy mahogany door..." }
+          { number: "201", name: "Deserted Lounge", leadText: "Enter through a frosted glass door..." },
+          { number: "204", name: "Quiet Library", leadText: "Push open a heavy mahogany door..." }
         ]
       },
       {
@@ -386,8 +438,8 @@
         narrative: "Leather armchairs face a bar with crystal decanters that fill themselves with amber liquids. A piano in the corner plays soft, lonely notes without anyone seated at the keys.",
         clue: "Your ruling planet {PLANET} exerts a subtle pull here. A coaster on the bar bears your initials.",
         doors: [
-          { label: "Door 303 - The Whispering Elevator", leadText: "Step into an ornate brass elevator cage..." },
-          { label: "Door 308 - The Courtyard Walk", leadText: "Open an iron door toward a misty garden..." }
+          { number: "303", name: "Whispering Elevator", leadText: "Step into an ornate brass elevator cage..." },
+          { number: "308", name: "Courtyard Garden", leadText: "Open an iron door toward a misty garden..." }
         ]
       },
       {
@@ -397,8 +449,8 @@
         narrative: "The brass elevator rises slowly with a low mechanical groan. Soft whispers echo through the floorboards, speaking fragments of memories you thought you had forgotten.",
         clue: "Listen closely: The hotel reads your zodiac marker, {SIGN}, weaving your traits into the walls.",
         doors: [
-          { label: "Floor 4 - Deserted Dining Hall", leadText: "Exit onto a floor covered in white marble..." },
-          { label: "Floor 5 - The Mirror Gallery", leadText: "Step out into a dimly lit hall of reflective glass..." }
+          { number: "401", name: "Deserted Dining Hall", leadText: "Exit onto a floor covered in white marble..." },
+          { number: "405", name: "Mirror Gallery", leadText: "Step out into a dimly lit hall of reflective glass..." }
         ]
       },
       {
@@ -408,8 +460,8 @@
         narrative: "A massive banqueting table is set for dozens, yet every silver platter is empty and sparkling clean. A single candle flickers in the center of the room.",
         clue: "You notice one chair pulled out just for you, inscribed with your solar sign archetype.",
         doors: [
-          { label: "Door 502 - Sunken Solarium", leadText: "Follow a glass passageway filled with moonlight..." },
-          { label: "Door 509 - The Clockwork Room", leadText: "Pass through a narrow door echoing with gears..." }
+          { number: "502", name: "Sunken Solarium", leadText: "Follow a glass passageway filled with moonlight..." },
+          { number: "509", name: "Clockwork Vault", leadText: "Pass through a narrow door echoing with gears..." }
         ]
       },
       {
@@ -419,8 +471,8 @@
         narrative: "Glass ceilings reveal a starless indigo sky above. Overgrown tropical ferns fill the room, smelling of rain and night-blooming jasmine.",
         clue: "Stars begin to align across the glass roof, forming the exact constellation of {SIGN}.",
         doors: [
-          { label: "Door 601 - Room 101", leadText: "Enter an unassuming brass-hinged hotel suite..." },
-          { label: "Door 607 - The Starlit Observatory", leadText: "Ascend a spiral iron staircase..." }
+          { number: "601", name: "Room 101 Suite", leadText: "Enter an unassuming brass-hinged hotel suite..." },
+          { number: "607", name: "Starlit Observatory", leadText: "Ascend a spiral iron staircase..." }
         ]
       },
       {
@@ -430,8 +482,8 @@
         narrative: "A luxurious suite frozen in time. An unmade bed, a rotary telephone off the hook softly emitting a dial tone, and a balcony looking into infinite darkness.",
         clue: "The phone speaker whispers your name: '{NAME}... your fate is being written.'",
         doors: [
-          { label: "Door 704 - The Boiler Sub-Basement", leadText: "Take a service door leading downward..." },
-          { label: "Door 710 - The Grand Ballroom", leadText: "Cross double doors with gilded handles..." }
+          { number: "704", name: "Boiler Basement", leadText: "Take a service door leading downward..." },
+          { number: "710", name: "Grand Ballroom", leadText: "Cross double doors with gilded handles..." }
         ]
       },
       {
@@ -441,8 +493,8 @@
         narrative: "Warm air radiates from glowing furnace pipes. Deep rhythmic thumps sound like the heartbeat of the hotel vibrating beneath your feet.",
         clue: "The heat tests your elemental nature ({ELEMENT}). You are nearing the core revelation.",
         doors: [
-          { label: "Door 802 - The High Observatory Corridor", leadText: "Climb an illuminated bronze staircase..." },
-          { label: "Door 808 - The Crystal Passage", leadText: "Walk into a narrow tunnel lined with quartz..." }
+          { number: "802", name: "Observatory Stairwell", leadText: "Climb an illuminated bronze staircase..." },
+          { number: "808", name: "Crystal Passage", leadText: "Walk into a narrow tunnel lined with quartz..." }
         ]
       },
       {
@@ -452,8 +504,8 @@
         narrative: "Prisms of light dance across smooth marble floors. Every reflection shows a slightly different version of your future choices.",
         clue: "Your planetary ruler {PLANET} shines brightly through the crystalline doorway at the end.",
         doors: [
-          { label: "Penthouse Elevator - Upper Deck", leadText: "Step into the golden penthouse lift..." },
-          { label: "The Penthouse Vault Door", leadText: "Unlock the final heavy starlight door..." }
+          { number: "901", name: "Penthouse Lift", leadText: "Step into the golden penthouse lift..." },
+          { number: "909", name: "Starlight Vault Door", leadText: "Unlock the final heavy starlight door..." }
         ]
       },
       {
@@ -463,13 +515,13 @@
         narrative: "You have reached the highest summit of the Horoscope Hotel. Double doors forged from celestial bronze loom before you, radiating warmth and quiet majesty.",
         clue: "All ten chambers have gathered your cosmic footprint. The Oracle awaits your arrival.",
         doors: [
-          { label: "OPEN THE FINAL DOOR TO YOUR FUTURE", leadText: "Step into the Oracle Chamber..." }
+          { number: "1000", name: "The Oracle Chamber", leadText: "Open the final door to reveal your future..." }
         ]
       }
     ];
 
     /* =========================================================================
-       4. SPEECH SYNTHESIS & FEMALE VOICE ENGINE
+       4. SPEECH SYNTHESIS & VOICE NARRATION ENGINE
        ========================================================================= */
     function initVoices() {
       if (!state.speechSynth) return;
@@ -508,14 +560,14 @@
 
     function speakSynchronizedText(text, containerElementId, onComplete = null) {
       const container = document.getElementById(containerElementId);
-      if (!container) return;
+      if (container) {
+        const words = text.split(" ");
+        container.innerHTML = words.map((w, i) => `<span id="word-${i}" class="transition-colors duration-150">${w} </span>`).join("");
+      }
 
       if (state.speechSynth) {
         state.speechSynth.cancel();
       }
-
-      const words = text.split(" ");
-      container.innerHTML = words.map((w, i) => `<span id="word-${i}" class="transition-colors duration-150">${w} </span>`).join("");
 
       if (state.audioMuted || !state.speechSynth) {
         if (onComplete) onComplete();
@@ -532,7 +584,7 @@
 
         let wordIdx = 0;
         utterance.onboundary = function(event) {
-          if (event.name === 'word') {
+          if (event.name === 'word' && container) {
             const prevWord = document.getElementById(`word-${wordIdx - 1}`);
             if (prevWord) prevWord.classList.remove('word-spoken');
 
@@ -544,15 +596,16 @@
         };
 
         utterance.onend = function() {
-          const spans = container.querySelectorAll('span');
-          spans.forEach(s => s.classList.remove('word-spoken'));
+          if (container) {
+            const spans = container.querySelectorAll('span');
+            spans.forEach(s => s.classList.remove('word-spoken'));
+          }
           if (onComplete) onComplete();
         };
 
         playAmbientChime();
         state.speechSynth.speak(utterance);
       } catch(e) {
-        console.log("Speech synthesis catch bypass:", e);
         if (onComplete) onComplete();
       }
     }
@@ -569,9 +622,7 @@
         if (state.audioCtx && state.audioCtx.state === 'suspended') {
           state.audioCtx.resume();
         }
-      } catch(e) {
-        console.log("AudioContext init error:", e);
-      }
+      } catch(e) {}
     }
 
     function playAmbientChime() {
@@ -602,18 +653,18 @@
         const gain = state.audioCtx.createGain();
 
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(80, state.audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(140, state.audioCtx.currentTime + 0.4);
-        osc.frequency.linearRampToValueAtTime(50, state.audioCtx.currentTime + 0.8);
+        osc.frequency.setValueAtTime(70, state.audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(130, state.audioCtx.currentTime + 0.4);
+        osc.frequency.linearRampToValueAtTime(40, state.audioCtx.currentTime + 0.9);
 
-        gain.gain.setValueAtTime(0.08, state.audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, state.audioCtx.currentTime + 0.8);
+        gain.gain.setValueAtTime(0.1, state.audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, state.audioCtx.currentTime + 0.9);
 
         osc.connect(gain);
         gain.connect(state.audioCtx.destination);
 
         osc.start();
-        osc.stop(state.audioCtx.currentTime + 0.8);
+        osc.stop(state.audioCtx.currentTime + 0.9);
       } catch(e) {}
     }
 
@@ -633,19 +684,22 @@
     }
 
     /* =========================================================================
-       6. GAME FLOW & NAVIGATION LOGIC
+       6. GAME FLOW & HOTEL DOOR NAVIGATION LOGIC
        ========================================================================= */
     
     window.addEventListener('DOMContentLoaded', () => {
       initVoices();
       initCanvas();
+      
+      setTimeout(() => {
+        const greetingText = "Welcome to the Horoscope Hotel, please enter your first name and date of birth to check in, but be aware that many check in but don't check out, as this journey reveals your future...";
+        speakSynchronizedText(greetingText, 'checkInNarrative');
+      }, 500);
     });
 
-    // Handle Form Submit
+    // Handle Check-In Form Submit
     function handleCheckIn(e) {
       if (e) e.preventDefault();
-      
-      // Initialize Audio Context on user click gesture
       initAudioContext();
 
       const nameInput = document.getElementById('guestName').value.trim();
@@ -675,24 +729,20 @@
       document.getElementById('hotelChamberScreen').classList.remove('hidden');
       document.getElementById('hotelChamberScreen').classList.add('flex');
 
-      // Load First Chamber
+      // Load Chamber 1
       loadChamber(0);
     }
 
-    // Load Specific Chamber
+    // Render Room & Hotel Doors
     function loadChamber(index) {
       state.currentChamberIndex = index;
       const chamber = hotelChambers[index];
 
-      // Update Header Progress
       document.getElementById('displayProgress').innerText = `${index + 1} / 10`;
-
-      // Update UI elements
       document.getElementById('chamberNumber').innerText = `CHAMBER 0${chamber.id} / 10`;
       document.getElementById('chamberTitle').innerText = chamber.title.toUpperCase();
       document.getElementById('chamberIcon').innerText = chamber.icon;
 
-      // Format customized Clue
       let formattedClue = chamber.clue
         .replace(/{NAME}/g, state.guestName)
         .replace(/{SIGN}/g, state.zodiacSign)
@@ -701,35 +751,72 @@
 
       document.getElementById('chamberClue').innerText = formattedClue;
 
-      // Format customized narrative
       let formattedNarrative = chamber.narrative
         .replace(/{NAME}/g, state.guestName)
         .replace(/{SIGN}/g, state.zodiacSign);
 
-      // Render Door Buttons
+      // Render Dynamic Hotel Door Buttons
       const doorContainer = document.getElementById('doorOptionsContainer');
       doorContainer.innerHTML = '';
 
-      chamber.doors.forEach((door, dIndex) => {
+      chamber.doors.forEach((door) => {
         const btn = document.createElement('button');
         btn.type = "button";
-        btn.className = "door-choice p-4 rounded bg-black/80 border border-amber-900/60 text-left hover:bg-amber-950/40 focus:outline-none";
+        btn.className = "hotel-door-btn rounded-lg p-5 flex flex-col justify-between items-center text-center focus:outline-none min-h-[160px]";
         btn.innerHTML = `
-          <div class="text-xs font-mono-custom text-amber-400 font-bold mb-1">${door.label}</div>
-          <div class="text-xs text-gray-400 italic">${door.leadText}</div>
+          <!-- Door Brass Number Plate -->
+          <div class="door-plate px-4 py-1 rounded text-sm tracking-widest border border-amber-900 mb-2">
+            ROOM ${door.number}
+          </div>
+          <div class="text-amber-200 font-cinzel font-bold text-base my-1">${door.name.toUpperCase()}</div>
+          <div class="text-xs text-amber-400/70 italic mt-1">${door.leadText}</div>
+          
+          <!-- Keyhole & Handle Graphic -->
+          <div class="mt-3 flex items-center gap-2 text-amber-500/80 text-xs font-mono-custom">
+            <span>🗝️ TURN KEY</span>
+          </div>
         `;
-        btn.onclick = () => selectDoor(dIndex, door.label);
+        btn.onclick = () => openDoorConfirmation(door.number, door.name);
         doorContainer.appendChild(btn);
       });
 
-      // Speak Chamber Narrative
       speakSynchronizedText(formattedNarrative, 'chamberNarrative');
     }
 
-    // Door Selection Callback
-    function selectDoor(doorIndex, doorLabel) {
+    // Door Selected Trigger -> Prompt Confirmation Voice
+    function openDoorConfirmation(doorNumber, doorName) {
+      initAudioContext();
       playDoorCreakSound();
-      state.choicesMade.push(doorLabel);
+
+      state.pendingSelection = { number: doorNumber, name: doorName };
+
+      const modal = document.getElementById('doorConfirmModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      const confirmSpeech = `You have chosen door number ${doorNumber}, are you certain you would like to proceed, as you may not change your destiny once you have chosen the door number?`;
+
+      speakSynchronizedText(confirmSpeech, 'confirmNarrative');
+    }
+
+    function cancelDoorSelection() {
+      if (state.speechSynth) state.speechSynth.cancel();
+      state.pendingSelection = null;
+      const modal = document.getElementById('doorConfirmModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmDoorSelection() {
+      if (!state.pendingSelection) return;
+
+      const selected = state.pendingSelection;
+      state.choicesMade.push(`Door ${selected.number} (${selected.name})`);
+      state.pendingSelection = null;
+
+      const modal = document.getElementById('doorConfirmModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
 
       if (state.currentChamberIndex < hotelChambers.length - 1) {
         loadChamber(state.currentChamberIndex + 1);
@@ -739,7 +826,7 @@
     }
 
     /* =========================================================================
-       7. FINAL HOROSCOPE ORACLE GENERATOR
+       7. FINAL HOROSCOPE ORACLE REVELATION
        ========================================================================= */
     function revealFinalHoroscope() {
       document.getElementById('hotelChamberScreen').classList.add('hidden');
@@ -753,10 +840,11 @@
       document.getElementById('finalSign').innerText = state.zodiacSign.toUpperCase();
       document.getElementById('finalElement').innerText = state.element.toUpperCase();
       document.getElementById('finalRuler').innerText = state.rulingPlanet.toUpperCase();
+      document.getElementById('finalPath').innerText = `${state.choicesMade.length} DOORS`;
 
-      const fullReading = `Welcome, ${state.guestName}, to the Oracle Penthouse of the Horoscope Hotel. You have walked through all ten corridors, leaving your signature in every chamber. As a ${state.zodiacSign} driven by the power of ${state.element} and ruled by ${state.rulingPlanet}, your future is now illuminated. The shadows you navigated reveal that a significant transformation awaits you. Embrace your innate ${state.zodiacTrait}. The doors of the Horoscope Hotel have opened your path: what was hidden is now revealed, and your future belongs entirely to you.`;
+      const fullReading = `Welcome, ${state.guestName}, to the Oracle Penthouse of the Horoscope Hotel. You have walked through all ten corridors, unlocking each numbered door and leaving your cosmic signature in every chamber. As a ${state.zodiacSign} driven by the element of ${state.element} and ruled by ${state.rulingPlanet}, your future is now revealed. The choices you sealed behind each numbered door confirm that a profound transformation is taking place. Embrace your innate ${state.zodiacTrait}. The Horoscope Hotel has registered your destiny, and your future is now yours to command.`;
 
-      const decreeText = `In the coming months, lean into your ${state.element} nature. ${state.rulingPlanet} signals a powerful turning point where an unexpected opportunity will require your decisive courage. Trust the clues you discovered in the silent rooms.`;
+      const decreeText = `Through your chosen path of numbered doors, the alignment of ${state.rulingPlanet} decrees that an unexpected opportunity will present itself soon. Trust the intuition that led you safely through the Horoscope Hotel.`;
 
       document.getElementById('destinyDecree').innerText = decreeText;
 
@@ -766,6 +854,7 @@
     function restartJourney() {
       state.currentChamberIndex = 0;
       state.choicesMade = [];
+      state.pendingSelection = null;
       
       document.getElementById('finalRevelationScreen').classList.add('hidden');
       document.getElementById('checkInScreen').classList.remove('hidden');
@@ -775,7 +864,7 @@
     }
 
     function shareDestiny() {
-      const shareText = `I navigated all 10 chambers of the Horoscope Hotel (H0H.com) and unlocked my future as a ${state.zodiacSign}!`;
+      const shareText = `I unlocked all 10 doors at the Horoscope Hotel (H0H.com) and revealed my destiny as a ${state.zodiacSign}!`;
       if (navigator.share) {
         navigator.share({
           title: 'Horoscope Hotel Destiny',
